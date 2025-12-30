@@ -1,86 +1,133 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Happy Birthday Priyanshi 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday</title>
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
   background: #ffd6e8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial, sans-serif;
   overflow: hidden;
 }
 
-.page {
+/* COUNTDOWN SCREEN */
+#countdownScreen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#timer {
+  font-size: 80px;
+  font-weight: bold;
+  color: #ff4081;
+}
+
+#text {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #444;
+}
+
+/* MAIN SCREEN */
+#mainScreen {
   display: none;
+  height: 100vh;
   text-align: center;
+  position: relative;
 }
 
-.page.active {
-  display: block;
+h1 {
+  margin-top: 40vh;
+  font-size: 32px;
+  color: #ff2f92;
+  animation: fadeIn 2s ease-in-out;
 }
 
-button {
-  padding: 12px 22px;
-  font-size: 16px;
-  border: none;
-  border-radius: 25px;
-  background: hotpink;
-  color: white;
-  cursor: pointer;
+/* BALLOONS */
+.balloon {
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 50px;
+  background: red;
+  border-radius: 50%;
+  animation: fly 6s linear infinite;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: #555;
+  left: 50%;
+  top: 50px;
+}
+
+@keyframes fly {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-120vh); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-  <h2>🎉 Happy Birthday My Love 💖🎂</h2>
-  <br>
-  <button onclick="nextPage()">Next 💕</button>
+<!-- COUNTDOWN -->
+<div id="countdownScreen">
+  <div id="timer">20</div>
+  <div id="text">Your surprise is loading 💝</div>
 </div>
 
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-  <h2>🎈 Make a Wish 🎈</h2>
-  <p>Your smile makes my world brighter ✨</p>
-  <br>
-  <button onclick="nextPage()">Cut the Cake 🎂</button>
-</div>
-
-<!-- PAGE 3 -->
-<div class="page" id="page3">
-  <h2>🎂 Cake Cutting Time 🎆</h2>
-  <p>May all your dreams come true 💝</p>
-  <br>
-  <button onclick="nextPage()">Open Message 💌</button>
-</div>
-
-<!-- PAGE 4 -->
-<div class="page" id="page4">
-  <h2>💌 For You</h2>
-  <p>
-    You are the most special part of my life.<br>
-    I wish you happiness, love and endless smiles 💖
-  </p>
+<!-- MAIN -->
+<div id="mainScreen">
+  <h1>🎉 Happy Birthday Priyanshi 💖 🎂</h1>
 </div>
 
 <script>
-let current = 1;
+let timeLeft = 20;
+const timer = document.getElementById("timer");
 
-function nextPage() {
-  document.getElementById("page" + current).classList.remove("active");
-  current++;
-  document.getElementById("page" + current).classList.add("active");
+const countdown = setInterval(() => {
+  timeLeft--;
+  timer.innerText = timeLeft;
+
+  if (timeLeft <= 0) {
+    clearInterval(countdown);
+    document.getElementById("countdownScreen").style.display = "none";
+    document.getElementById("mainScreen").style.display = "block";
+    createBalloons();
+  }
+}, 1000);
+
+function createBalloons() {
+  for (let i = 0; i < 15; i++) {
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.style.left = Math.random() * 100 + "vw";
+    balloon.style.background = randomColor();
+    balloon.style.animationDuration = (4 + Math.random() * 4) + "s";
+    document.body.appendChild(balloon);
+  }
+}
+
+function randomColor() {
+  const colors = ["#ff4081", "#ff9800", "#3f51b5", "#4caf50", "#9c27b0"];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 </script>
 
 </body>
-    </html>
+</html>
